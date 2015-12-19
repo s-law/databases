@@ -10,7 +10,7 @@
     "mocha": "^1.21.4",
     "morgan": "^1.4.1",
     "mysql": "^2.10.0",
-    "request": "^2.40.0",
+    "request": "^2.67.0",
     "sequelize": "^2.0.6"
   },
   "scripts": {
