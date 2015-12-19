@@ -16,14 +16,14 @@ CREATE TABLE users (
 
 CREATE TABLE messages (
   id INT NOT NULL AUTO_INCREMENT,
-  room_id INT,
-  user_id INT,
+  roomname INT,
+  username INT,
   msg_text VARCHAR(140),
-  createdAt TIMESTAMP,
+  createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,/* should automatically add timestamp as data is entered*/
   PRIMARY KEY (id),
-  FOREIGN KEY (room_id)
+  FOREIGN KEY (roomname)
     REFERENCES rooms(id),
-  FOREIGN KEY (user_id)
+  FOREIGN KEY (username)
     REFERENCES users(id)
 );
 

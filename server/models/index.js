@@ -1,15 +1,15 @@
-var db = require('../db');
+var db = require('../db').connection;
 
 module.exports = {
   messages: {
     get: function (callback) {
-      db.query('SELECT msg_text FROM messages', function(err, result, fields)
+      db.query('SELECT username, msg_text FROM messages', function(err, result)
         {
           callback(result);
         });
     }, // a function which produces all the messages
-    post: function (callback) {
-      db.query('INSERT INTO messages VALUES' , function(err, result, fields)
+    post: function (msgData, callback) {
+      db.query('INSERT INTO messages (roomname, username, msg_text) VALUES ?', [msgData] , function(err, result)
         {
           // the above needs arguments in the sqlstring with values array [s1, s2, s3...]
           callback(result.insertId);
@@ -20,10 +20,13 @@ module.exports = {
   users: {
     // Ditto as above.
     get: function (callback) {
-
+      db.query('SELECT name FROM users', function(err, result)
+        {
+          callback(result);
+        });
     },
     post: function (username, callback) {
-      db.query('INSERT INTO users VALUES' , function(err, result, fields)
+      db.query('INSERT INTO users (name) VALUES (' + username + ')' , function(err, result)
         {
           // the above needs arguments in the sqlstring with values array [s1, s2, s3...]
           callback(result.insertId);
@@ -34,10 +37,13 @@ module.exports = {
   rooms: {
     // Ditto as above.
     get: function (callback) {
-
+      db.query('SELECT name FROM rooms', function(err, result)
+        {
+          callback(result);
+        });
     },
     post: function (roomname, callback) {
-      db.query('INSERT INTO rooms VALUES' , function(err, results, fields)
+      db.query('INSERT INTO rooms (name) VALUES (' + roomname + ')', function(err, result)
         {
           // the above needs arguments in the sqlstring with values array [s1, s2, s3...]
           callback(result.insertId);

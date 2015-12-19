@@ -8,14 +8,7 @@ exports.connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
   password : 'mypw',
-  port: 3000
+  database: 'chat'
 });
- 
-connection.connect(function(err) {
-  if (err) {
-    console.error('connection error: ' + err.stack);
-    return;
-  }
- 
-  console.log('connected as id ' + connection.threadId);
-});
+
+exports.connection.connect();

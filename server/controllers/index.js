@@ -3,24 +3,29 @@ var models = require('../models');
 module.exports = {
   messages: {
     get: function (req, res) {
-      models.messages.get(res.send);
+      models.messages.get(function(result) {
+        console.log(result);
+        var data = {};
+        data.results = result;
+        res.send(data);
+      });
     }, // a function which handles a get request for all messages
     post: function (req, res) {
       req.on('data', function(data) {
-        var user = data.username;
         var userId;
-        var room = data.roomname;
         var roomId;
-        var msg = data.message;
 
-        models.username.post(user, function(uId) {
+        models.users.post(data.username, function(uId) {
           userId = uId;
         });
-        models.roomname.post(room, function(rId) {
+        models.rooms.post(data.roomname, function(rId) {
           roomId = rId;
         });
-        models.messages.post(msg, userId, roomId, function(mId) {
-          res.send(msgId);
+
+        var msgData = [roomId, userId, data.message];
+
+        models.messages.post(msgData, function(mId) {
+          res.send(mId);
         });
       });
     } // a function which handles posting a message to the database
@@ -29,10 +34,30 @@ module.exports = {
   users: {
     // Ditto as above
     get: function (req, res) {
-      models.messages.get()
+      models.users.get(res.send);
     },
     post: function (req, res) {
-      models.messages.post()
+      req.on('data', function(data){
+
+        models.users.post(data.username, function(uId) {
+          res.send(uId);
+        });
+      });
+    }
+  },
+
+  rooms: {
+    // Ditto as above
+    get: function (req, res) {
+      models.rooms.get(res.send);
+    },
+    post: function (req, res) {
+      req.on('data', function(data){
+
+        models.rooms.post(data.roomname, function(uId) {
+          res.send(uId);
+        });
+      });
     }
   }
 };
