@@ -9,9 +9,10 @@ module.exports = {
         });
     }, // a function which produces all the messages
     post: function (msgData, callback) {
-      db.query('INSERT INTO messages (roomname, username, msg_text) VALUES ?', [msgData] , function(err, result)
+      db.query('INSERT INTO messages (roomname, username, msg_text) VALUES ?', [[msgData]] , function(err, result)
         {
           // the above needs arguments in the sqlstring with values array [s1, s2, s3...]
+          console.log('you are here');
           callback(result.insertId);
         });
     } // a function which can be used to insert a message into the database
@@ -26,9 +27,9 @@ module.exports = {
         });
     },
     post: function (username, callback) {
-      db.query('INSERT INTO users (name) VALUES (' + username + ')' , function(err, result)
+      var sqlstr = 'INSERT INTO users (username) VALUES (\'' + username + '\')';
+      db.query(sqlstr , function(err, result)
         {
-          // the above needs arguments in the sqlstring with values array [s1, s2, s3...]
           callback(result.insertId);
         });
     }
@@ -39,13 +40,14 @@ module.exports = {
     get: function (callback) {
       db.query('SELECT name FROM rooms', function(err, result)
         {
+          console.log('hello')
           callback(result);
         });
     },
     post: function (roomname, callback) {
-      db.query('INSERT INTO rooms (name) VALUES (' + roomname + ')', function(err, result)
+      var sqlstr = 'INSERT INTO rooms (roomname) VALUES (\'' + roomname + '\')';
+      db.query(sqlstr , function(err, result)
         {
-          // the above needs arguments in the sqlstring with values array [s1, s2, s3...]
           callback(result.insertId);
         });
 

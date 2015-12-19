@@ -37,7 +37,7 @@ var app = {
     app.startSpinner();
     // Clear messages input
     app.$message.val('');
-
+    console.log('function called');
     // POST the message to the server
     $.ajax({
       url: app.server,
@@ -46,6 +46,7 @@ var app = {
       contentType: 'application/json',
       success: function (data) {
         // Trigger a fetch to update the messages, pass true to animate
+        console.log('butts');
         app.fetch();
       },
       error: function (data) {
@@ -64,7 +65,6 @@ var app = {
         console.log(data.results);
         // Don't bother if we have nothing to work with
         if (!data.results || !data.results.length) { return; }
-        debugger;
         // Get the last message
         var mostRecentMessage = data.results[data.results.length-1];
         var displayedRoom = $('.chat span').first().data('roomname');
@@ -214,7 +214,7 @@ var app = {
 
   handleSubmit: function(evt) {
     var message = {
-      username: app.username,
+      username: app.username || 'george',
       text: app.$message.val(),
       roomname: app.roomname || 'lobby'
     };

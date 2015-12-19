@@ -4,30 +4,35 @@ module.exports = {
   messages: {
     get: function (req, res) {
       models.messages.get(function(result) {
-        console.log(result);
         var data = {};
         data.results = result;
         res.send(data);
       });
     }, // a function which handles a get request for all messages
     post: function (req, res) {
-      req.on('data', function(data) {
-        var userId;
-        var roomId;
+      var user = req.body.username;
+      var room = req.body.roomname;
+      var msg = req.body.text;
 
-        models.users.post(data.username, function(uId) {
-          userId = uId;
-        });
-        models.rooms.post(data.roomname, function(rId) {
+      models.users.post(user, function(uId) {
+        userId = uId;
+        models.rooms.post(room, function(rId) {
           roomId = rId;
-        });
+          var msgData = [roomId, userId, msg];
 
-        var msgData = [roomId, userId, data.message];
-
-        models.messages.post(msgData, function(mId) {
-          res.send(mId);
+          models.messages.post(msgData, function(mId) {
+            res.send(mId);
+          });
         });
       });
+
+
+      // req.on('data', function(data) {
+      //   console.log(data);
+      //   var userId;
+      //   var roomId;
+
+      // });
     } // a function which handles posting a message to the database
   },
 
