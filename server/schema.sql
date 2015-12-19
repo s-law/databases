@@ -3,19 +3,19 @@ CREATE DATABASE chat;
 USE chat;
 
 CREATE TABLE rooms (
-  id INT,
+  id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(32),
   PRIMARY KEY (id)
 );
 
 CREATE TABLE users (
-  id INT,
+  id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(32),
   PRIMARY KEY (id)
 );
 
 CREATE TABLE messages (
-  id INT,
+  id INT NOT NULL AUTO_INCREMENT,
   room_id INT,
   user_id INT,
   msg_text VARCHAR(140),

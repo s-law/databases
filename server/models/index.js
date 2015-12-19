@@ -3,18 +3,16 @@ var db = require('../db');
 module.exports = {
   messages: {
     get: function (callback) {
-      db.query('select msg_text from messages', function(err, results, fields)
+      db.query('SELECT msg_text FROM messages', function(err, result, fields)
         {
-          console.log(results);
-          console.log(fields);
+          callback(result);
         });
     }, // a function which produces all the messages
     post: function (callback) {
-      db.query('insert into messages values', function(err, results, fields)
+      db.query('INSERT INTO messages VALUES' , function(err, result, fields)
         {
-          // the above needs arguments in the sqlstring with values (s1, s2, s3...)
-          console.log(results);
-          console.log(fields);
+          // the above needs arguments in the sqlstring with values array [s1, s2, s3...]
+          callback(result.insertId);
         });
     } // a function which can be used to insert a message into the database
   },
@@ -24,7 +22,26 @@ module.exports = {
     get: function (callback) {
 
     },
-    post: function (callback) {
+    post: function (username, callback) {
+      db.query('INSERT INTO users VALUES' , function(err, result, fields)
+        {
+          // the above needs arguments in the sqlstring with values array [s1, s2, s3...]
+          callback(result.insertId);
+        });
+    }
+  },
+
+  rooms: {
+    // Ditto as above.
+    get: function (callback) {
+
+    },
+    post: function (roomname, callback) {
+      db.query('INSERT INTO rooms VALUES' , function(err, results, fields)
+        {
+          // the above needs arguments in the sqlstring with values array [s1, s2, s3...]
+          callback(result.insertId);
+        });
 
     }
   }
