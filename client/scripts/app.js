@@ -60,12 +60,11 @@ var app = {
       type: 'GET',
       contentType: 'application/json',
       success: function(data) {
-        console.log('test');
         console.log(data);
         console.log(data.results);
         // Don't bother if we have nothing to work with
         if (!data.results || !data.results.length) { return; }
-
+        debugger;
         // Get the last message
         var mostRecentMessage = data.results[data.results.length-1];
         var displayedRoom = $('.chat span').first().data('roomname');

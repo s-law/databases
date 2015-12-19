@@ -4,13 +4,13 @@ USE chat;
 
 CREATE TABLE rooms (
   id INT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(32),
+  roomname VARCHAR(32),
   PRIMARY KEY (id)
 );
 
 CREATE TABLE users (
   id INT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(32),
+  username VARCHAR(32),
   PRIMARY KEY (id)
 );
 
