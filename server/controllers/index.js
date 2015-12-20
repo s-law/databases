@@ -25,19 +25,10 @@ module.exports = {
           });
         });
       });
-
-
-      // req.on('data', function(data) {
-      //   console.log(data);
-      //   var userId;
-      //   var roomId;
-
-      // });
-    } // a function which handles posting a message to the database
+    }
   },
 
   users: {
-    // Ditto as above
     get: function (req, res) {
       models.users.get(res.send);
     },
@@ -52,7 +43,6 @@ module.exports = {
   },
 
   rooms: {
-    // Ditto as above
     get: function (req, res) {
       models.rooms.get(res.send);
     },

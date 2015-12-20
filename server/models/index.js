@@ -7,15 +7,13 @@ module.exports = {
         {
           callback(result);
         });
-    }, // a function which produces all the messages
+    },
     post: function (msgData, callback) {
       db.query('INSERT INTO messages (roomname, username, msg_text) VALUES ?', [[msgData]] , function(err, result)
         {
-          // the above needs arguments in the sqlstring with values array [s1, s2, s3...]
-          console.log('you are here');
           callback(result.insertId);
         });
-    } // a function which can be used to insert a message into the database
+    }
   },
 
   users: {
@@ -32,7 +30,6 @@ module.exports = {
           return element.username;
         });
         var nameIndex = result.indexOf(username);
-        console.log()
         if (nameIndex === -1) {
           var sqlstr = 'INSERT INTO users (username) VALUES (\'' + username + '\')';
           db.query(sqlstr , function(err, result)
@@ -42,7 +39,6 @@ module.exports = {
         } else {
           callback(nameIndex+1);
         }
-        
       });
     }
   },
@@ -52,17 +48,25 @@ module.exports = {
     get: function (callback) {
       db.query('SELECT roomname FROM rooms', function(err, result)
         {
-          console.log('hello')
           callback(result);
         });
     },
     post: function (roomname, callback) {
-      var sqlstr = 'INSERT INTO rooms (roomname) VALUES (\'' + roomname + '\')';
-      db.query(sqlstr , function(err, result)
-        {
-          callback(result.insertId);
+      module.exports.rooms.get(function(result) {
+        result = result.map(function(element) {
+          return element.roomname;
         });
-
+        var roomIndex = result.indexOf(roomname);
+        if (roomIndex === -1) {
+          var sqlstr = 'INSERT INTO rooms (roomname) VALUES (\'' + roomname + '\')';
+          db.query(sqlstr , function(err, result)
+            {
+              callback(result.insertId);
+            });
+        } else {
+          callback(roomIndex+1);
+        }
+      });
     }
   }
 };

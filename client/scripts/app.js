@@ -37,7 +37,6 @@ var app = {
     app.startSpinner();
     // Clear messages input
     app.$message.val('');
-    console.log('function called');
     // POST the message to the server
     $.ajax({
       url: app.server,
@@ -45,11 +44,10 @@ var app = {
       data: JSON.stringify(data),
       contentType: 'application/json',
       success: function (data) {
-        // Trigger a fetch to update the messages, pass true to animate
-        console.log('butts');
         app.fetch();
       },
       error: function (data) {
+        app.fetch();
         console.error('chatterbox: Failed to send message');
       }
     });
