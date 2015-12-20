@@ -21,24 +21,35 @@ module.exports = {
   users: {
     // Ditto as above.
     get: function (callback) {
-      db.query('SELECT name FROM users', function(err, result)
+      db.query('SELECT username FROM users', function(err, result)
         {
           callback(result);
         });
     },
     post: function (username, callback) {
-      var sqlstr = 'INSERT INTO users (username) VALUES (\'' + username + '\')';
-      db.query(sqlstr , function(err, result)
-        {
-          callback(result.insertId);
+      module.exports.users.get(function(result) {
+        result.map(function(element) {
+          return element.username;
         });
+        console.log(result);
+        if ('lk') {
+          var sqlstr = 'INSERT INTO users (username) VALUES (\'' + username + '\')';
+          db.query(sqlstr , function(err, result)
+            {
+              callback(result.insertId);
+            });
+        } else {
+
+        }
+        
+      });
     }
   },
 
   rooms: {
     // Ditto as above.
     get: function (callback) {
-      db.query('SELECT name FROM rooms', function(err, result)
+      db.query('SELECT roomname FROM rooms', function(err, result)
         {
           console.log('hello')
           callback(result);
