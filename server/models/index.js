@@ -28,18 +28,19 @@ module.exports = {
     },
     post: function (username, callback) {
       module.exports.users.get(function(result) {
-        result.map(function(element) {
+        result = result.map(function(element) {
           return element.username;
         });
-        console.log(result);
-        if ('lk') {
+        var nameIndex = result.indexOf(username);
+        console.log()
+        if (nameIndex === -1) {
           var sqlstr = 'INSERT INTO users (username) VALUES (\'' + username + '\')';
           db.query(sqlstr , function(err, result)
             {
               callback(result.insertId);
             });
         } else {
-
+          callback(nameIndex+1);
         }
         
       });
