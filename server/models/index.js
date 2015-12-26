@@ -3,7 +3,7 @@ var db = require('../db').connection;
 module.exports = {
   messages: {
     get: function (callback) {
-      db.query('select rooms.roomname, users.username, messages.msg_text FROM rooms INNER JOIN users INNER JOIN messages ON (rooms.id = messages.roomname AND users.id = messages.username)', function(err, result)
+      db.query('select rooms.roomname, messages.id, messages.createdAt, users.username, messages.msg_text FROM rooms INNER JOIN users INNER JOIN messages ON (rooms.id = messages.roomname AND users.id = messages.username)', function(err, result)
         {
           callback(result);
         });
