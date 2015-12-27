@@ -3,13 +3,13 @@ var db = require('../db').connection;
 module.exports = {
   messages: {
     get: function (callback) {
-      db.query('select rooms.roomname, messages.id, messages.createdAt, users.username, messages.msg_text FROM rooms INNER JOIN users INNER JOIN messages ON (rooms.id = messages.roomname AND users.id = messages.username)', function(err, result)
+      db.query('select Rooms.roomname, Messages.id, Messages.createdAt, Users.username, Messages.msg_text FROM Rooms INNER JOIN Users INNER JOIN Messages ON (Rooms.id = Messages.RoomId AND Users.id = Messages.UserId)', function(err, result)
         {
           callback(result);
         });
     },
     post: function (msgData, callback) {
-      db.query('INSERT INTO messages (roomname, username, msg_text) VALUES ?', [[msgData]] , function(err, result)
+      db.query('INSERT INTO messages (RoomId, UserId, msg_text) VALUES ?', [[msgData]] , function(err, result)
         {
           callback(result.insertId);
         });
@@ -31,7 +31,7 @@ module.exports = {
         });
         var nameIndex = result.indexOf(username);
         if (nameIndex === -1) {
-          var sqlstr = 'INSERT INTO users (username) VALUES (\'' + username + '\')';
+          var sqlstr = 'INSERT INTO Users (username) VALUES (\'' + username + '\')';
           db.query(sqlstr , function(err, result)
             {
               callback(result.insertId);
