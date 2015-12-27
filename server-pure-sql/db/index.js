@@ -4,19 +4,21 @@ var db = new Sequelize("chat", "root", "mypw");
 var User = db.define('User', {
   username: Sequelize.STRING
 }, {
-  timestamps: true,
-  updatedAt: false
+  timestamps: false
 });
 
 var Room = db.define('Room', {
   roomname: Sequelize.STRING
 }, {
-  timestamps: true,
-  updatedAt: false
+  timestamps: false
 })
 
 var Message = db.define('Message', {
   msg_text: Sequelize.STRING,
+  createdAt: {
+    type: Sequelize.DATE,
+    defaultValue: Sequelize.fn('NOW')
+  }
 }, {
   timestamps: true,
   updatedAt: false
