@@ -33,11 +33,8 @@ module.exports = {
       models.users.get(res.send);
     },
     post: function (req, res) {
-      req.on('data', function(data){
-
-        models.users.post(data.username, function(uId) {
-          res.send(uId);
-        });
+      models.users.post(req.body.username, function(uId) {
+        res.send(uId);
       });
     }
   },
@@ -47,11 +44,8 @@ module.exports = {
       models.rooms.get(res.send);
     },
     post: function (req, res) {
-      req.on('data', function(data){
-
-        models.rooms.post(data.roomname, function(uId) {
-          res.send(uId);
-        });
+      models.rooms.post(req.body.roomname, function(uId) {
+        res.send(uId);
       });
     }
   }
