@@ -1,53 +1,76 @@
-var models = require('../models');
+var db = require('../db');
 
 module.exports = {
   messages: {
     get: function (req, res) {
-      models.messages.get(function(result) {
-        var data = {};
-        data.results = result;
-        res.send(data);
-      });
-    }, // a function which handles a get request for all messages
-    post: function (req, res) {
-      var user = req.body.username;
-      var room = req.body.roomname;
-      var msg = req.body.text;
-
-      models.users.post(user, function(uId) {
-        userId = uId;
-        models.rooms.post(room, function(rId) {
-          roomId = rId;
-          var msgData = [roomId, userId, msg];
-
-          models.messages.post(msgData, function(mId) {
-            res.send(mId);
-          });
+      db.Message.findAll({include: [db.User, db.Room]})
+        .then(function(messages) {
+          formattedMsgs = messages.map(function(message) {
+            return {
+              createdAt: message.createdAt,
+              msg_text: message.msg_text,
+              id: message.id,
+              roomname: message.Room.roomname,
+              username: message.User.username
+            }
+          })
+          messages = {}
+          messages.results = formattedMsgs;
+          res.json(messages);
         });
-      });
+    },
+    post: function (req, res) {
+      db.Room.findOrCreate({
+        where: {
+          roomname: req.body.roomname
+        }
+      })
+      .spread(function(room, created) {
+        db.User.findOrCreate({
+          where: {
+            username: req.body.username
+          }})
+          .spread(function(user, created) {
+            db.Message.create({
+              UserId: user.get('id'),
+              msg_text: req.body.msg_text,
+              RoomId: room.get('id')
+            }).then(function(message) {
+              res.sendStatus(201);
+            });
+          });
+      })
+
     }
   },
 
   users: {
     get: function (req, res) {
-      models.users.get(res.send);
+      db.User.findAll()
+        .then(function(users) {
+          res.json(users);
+        });
     },
     post: function (req, res) {
-      models.users.post(req.body.username, function(uId) {
-        res.send(uId);
-      });
+      db.User.findOrCreate({where: {username: req.body.username}})
+        .spread(function(user, created) {
+          res.sendStatus(created ? 201 : 200);
+        });
     }
   },
 
   rooms: {
     get: function (req, res) {
-      models.rooms.get(res.send);
+      db.Room.findAll()
+        .then(function(rooms) {
+          res.json(rooms);
+        });
     },
     post: function (req, res) {
-      models.rooms.post(req.body.roomname, function(uId) {
-        res.send(uId);
-      });
+      db.Room.findOrCreate({where: {roomname: req.body.roomname}})
+        .spread(function(room, created) {
+          res.sendStatus(created ? 201 : 200);
+        });
     }
   }
 };
-
