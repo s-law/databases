@@ -24,7 +24,8 @@ var Message = Backbone.Model.extend({
   url: 'http://localhost:3000/classes/messages',
   defaults: {
     username: '',
-    msg_text: ''
+    msg_text: '',
+    roomname: 'lobby'
   }
 });
 
@@ -68,7 +69,7 @@ var FormView = Backbone.View.extend({
     var $usr = this.$('#user');
     this.collection.create({
       username: $usr.val(),
-      text: $text.val()
+      msg_text: $text.val()
     });
     $text.val('');
   },
@@ -91,7 +92,7 @@ var MessageView = Backbone.View.extend({
     this.model.on('change', this.render, this);
   },
 
-  template: _.template('<div class="chat" data-id="<%- id %>"> \
+  template: _.template('<div class="chat" data-id="<%- id %>" data-roomname="<%- roomname %>"> \
                           <div class="user"><%- username %></div> \
                           <div class="text"><%- msg_text %></div> \
                         </div>'),
