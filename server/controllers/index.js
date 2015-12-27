@@ -12,7 +12,7 @@ module.exports = {
     post: function (req, res) {
       var user = req.body.username;
       var room = req.body.roomname;
-      var msg = req.body.text;
+      var msg = req.body.msg_text;
 
       models.users.post(user, function(uId) {
         userId = uId;
