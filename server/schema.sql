@@ -19,7 +19,7 @@ CREATE TABLE messages (
   roomname INT,
   username INT,
   msg_text VARCHAR(140),
-  createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,/* should automatically add timestamp as data is entered*/
+  createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,/* should automatically add timestamp as data is entered*/
   PRIMARY KEY (id),
   FOREIGN KEY (roomname)
     REFERENCES rooms(id),
