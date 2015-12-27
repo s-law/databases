@@ -1,4 +1,35 @@
 var db = require('../db').connection;
+var Sequelize = require('sequelize');
+
+var sequelize = new Sequelize('chat', 'root', 'mypw');
+
+
+// define models here
+var User = sequelize.define('users', {
+  username: Sequelize.STRING(32)
+})
+
+var Room = sequelize.define('rooms', {
+  roomname: Sequelize.STRING(32)
+})
+
+var Message = sequelize.define('messages', {
+  msg_text: Sequelize.STRING(140),
+  roomname: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: Room,
+      key: 'id'
+    }
+  },
+  username: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: User,
+      key: 'id'
+    }
+  }
+});
 
 module.exports = {
   messages: {
